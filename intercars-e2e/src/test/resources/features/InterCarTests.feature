@@ -1,6 +1,6 @@
-Feature: Add to cart
+Feature: As a client I should be able to manage my shopping chart
 
-  Scenario Outline: Add one quantity from Store
+  Scenario Outline: As client I should be able to add and remove items from my chart
 #    TODO close cookies button does not work
     Given I'm on intercars main page
     When I click select vehicle
