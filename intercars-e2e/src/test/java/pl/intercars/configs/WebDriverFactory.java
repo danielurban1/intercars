@@ -6,6 +6,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.support.events.EventFiringDecorator;
+import org.openqa.selenium.support.events.WebDriverListener;
 import pl.intercars.enums.SupportedBrowser;
 
 import static pl.intercars.enums.SupportedBrowser.getSupportedBrowser;
@@ -28,7 +30,7 @@ public class WebDriverFactory {
                 driver = initializeFireFox();
                 break;
         }
-        return driver;
+        return setupDriverListener(driver);
     }
 
     private static WebDriver initializeChrome() {
@@ -49,5 +51,10 @@ public class WebDriverFactory {
         firefoxOptions.addPreference("security.csp.enable", false);
         firefoxOptions.addPreference("network.proxy.no_proxies_on", "");
         return new FirefoxDriver();
+    }
+
+    private static WebDriver setupDriverListener(WebDriver driver){
+        WebDriverListener customWebDriverListener = new CustomWebDriverListener();
+        return new EventFiringDecorator<>(customWebDriverListener).decorate(driver);
     }
 }

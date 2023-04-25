@@ -62,7 +62,7 @@ public class ProductsPage extends BasePage{
         element.sendKeys(String.valueOf(quantity));
     }
 
-    public void clickSubmitButton(final int index){
+    public void clickSubmitButton(final int index) throws InterruptedException {
         WebElement element = driver.findElement(
                 By.xpath("//div[@id='promoted-products']//div[@class='clearfix']["
                         + index + "]//button[@type='submit']"));

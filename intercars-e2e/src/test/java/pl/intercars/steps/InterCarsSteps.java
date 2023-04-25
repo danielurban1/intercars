@@ -32,14 +32,13 @@ public class InterCarsSteps {
 
     @Given("I'm on intercars main page")
     public void iMOnIntercarsMainPage() {
-
         mainPage.openPage();
         assertThat(context.getDriver().getTitle())
                 .isEqualTo("Sklep motoryzacyjny Inter Cars - Części samochodowe online - Opony, akumulatory, części samochodowe");
     }
 
     @When("I click select vehicle")
-    public void iClickSelectVehicle() throws InterruptedException {
+    public void iClickSelectVehicle() {
         mainPage.clickCarIcon();
         assertThat(mainPage.isVehicleSelectorPopupVisible()).isTrue();
     }
@@ -65,7 +64,7 @@ public class InterCarsSteps {
     }
 
     @And("I add {int} items with index {int} to chart")
-    public void iAddItemsWithIndexToChart(final int quantity, final int index) {
+    public void iAddItemsWithIndexToChart(final int quantity, final int index) throws InterruptedException {
         Product product = new Product(productsPage.getProductName(index), productsPage.getProductPrice(index), quantity);
         productsPage.inputProductQuantity(index, quantity);
         productsPage.clickSubmitButton(index);
