@@ -12,7 +12,10 @@ import pl.intercars.enums.SupportedBrowser;
 import java.net.UnknownHostException;
 
 import static pl.intercars.configs.BrowserMobConfig.*;
+import static pl.intercars.configs.DevToolsListener.logDevToolsConsoleEvents;
 import static pl.intercars.configs.WebDriverFactory.initializeDrive;
+import static pl.intercars.enums.SupportedBrowser.getSupportedBrowser;
+
 @Slf4j
 @Getter
 @AllArgsConstructor
@@ -26,6 +29,7 @@ public class CucumberHooks {
         startMobProxyServer();
         logHttpTraffic(false);
         context.driver = initializeDrive(browser);
+        logDevToolsConsoleEvents(context.driver, getSupportedBrowser(browser));
         context.driver.manage().window().maximize();
     }
 

@@ -6,14 +6,11 @@ import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.client.ClientUtil;
 import org.openqa.selenium.Proxy;
 
-import java.net.UnknownHostException;
-import java.util.concurrent.atomic.AtomicReference;
-
 @Slf4j
 public class BrowserMobConfig {
     private static BrowserMobProxy proxy;
 
-    public static void startMobProxyServer() throws UnknownHostException {
+    public static void startMobProxyServer()  {
         log.info("Starting Browser Mob Proxy");
         proxy = new BrowserMobProxyServer();
         proxy.setTrustAllServers(true);
@@ -36,7 +33,7 @@ public class BrowserMobConfig {
         log.info(logMessage);
         proxy.addResponseFilter(((httpResponse, httpMessageContents, httpMessageInfo) -> {
             if (logAll && httpResponse.status().code() < 400){
-                log.info("uri: {}{}\nresponse status: {}\nresponse content: {}",
+                log.info("Request URL: {}{}\nresponse status: {}\nresponse content: {}",
                         httpMessageInfo.getOriginalUrl(),
                         httpMessageInfo.getOriginalRequest().uri(),
                         httpResponse.status().code(),
