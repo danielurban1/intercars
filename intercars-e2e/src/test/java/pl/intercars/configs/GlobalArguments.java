@@ -13,6 +13,7 @@ public class GlobalArguments {
     public static final String URL = "https://intercars.pl/";
     public static final String CUCUMBER_GLUE = "pl.intercars";
     public static final String FEATURES = "src/test/resources/features";
+    public static final String ALLURE_PLUGIN = "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm";
 
 
 }

@@ -25,6 +25,7 @@
     <slf4j.version>2.0.7</slf4j.version>
     <browsermob.version>2.1.5</browsermob.version>
     <guava.version>31.1-jre</guava.version>
+    <allure.version>2.21.0</allure.version>
   </properties>
 
   <build>
@@ -137,6 +138,20 @@
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>${guava.version}</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/io.qameta.allure/allure-cucumber7-jvm -->
+    <dependency>
+      <groupId>io.qameta.allure</groupId>
+      <artifactId>allure-cucumber7-jvm</artifactId>
+      <version>${allure.version}</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/io.cucumber/gherkin -->
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>gherkin</artifactId>
+      <version>26.2.0</version>
     </dependency>
 
   </dependencies>
