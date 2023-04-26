@@ -13,10 +13,11 @@ import pl.intercars.enums.SupportedBrowser;
 import java.net.UnknownHostException;
 
 import static pl.intercars.configs.BrowserMobConfig.getSeleniumProxy;
+import static pl.intercars.configs.GlobalArguments.DRIVER_ARGUMENTS;
 import static pl.intercars.enums.SupportedBrowser.getSupportedBrowser;
 
 public class WebDriverFactory {
-    public static WebDriver initializeDrive(final String browser) throws UnknownHostException {
+    public static WebDriver initializeDrive(final String browser) {
         SupportedBrowser supportedBrowser;
         if (browser == null) {
             supportedBrowser = SupportedBrowser.CHROME;
@@ -36,10 +37,9 @@ public class WebDriverFactory {
         return setupDriverListener(driver);
     }
 
-    private static WebDriver initializeChrome() throws UnknownHostException {
+    private static WebDriver initializeChrome() {
         ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("--remote-allow-origins=*");
-        chromeOptions.addArguments("ignore-certificate-errors");
+        chromeOptions.addArguments(DRIVER_ARGUMENTS);
         chromeOptions.setProxy(getSeleniumProxy());
         WebDriverManager.chromedriver().setup();
         return new ChromeDriver(chromeOptions);
@@ -47,14 +47,9 @@ public class WebDriverFactory {
 
     private static WebDriver initializeFireFox() {
         FirefoxOptions firefoxOptions = new FirefoxOptions();
+        firefoxOptions.addArguments(DRIVER_ARGUMENTS);
+        firefoxOptions.setProxy(getSeleniumProxy());
         WebDriverManager.firefoxdriver().setup();
-        firefoxOptions.addPreference("network.automatic-ntlm-auth.trusted-uris", "http://,https://");
-        firefoxOptions.addPreference("network.automatic-ntlm-auth.allow-non-fqdn", true);
-        firefoxOptions.addPreference("network.negotiate-auth.delegation-uris", "http://,https://");
-        firefoxOptions.addPreference("network.negotiate-auth.trusted-uris", "http://,https://");
-        firefoxOptions.addPreference("network.http.phishy-userpass-length", 255);
-        firefoxOptions.addPreference("security.csp.enable", false);
-        firefoxOptions.addPreference("network.proxy.no_proxies_on", "");
         return new FirefoxDriver();
     }
 

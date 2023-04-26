@@ -28,9 +28,9 @@ public class CucumberHooks {
         log.info("Selected browser: " + browser);
         startMobProxyServer();
         logHttpTraffic(false);
-        context.driver = initializeDrive(browser);
-        logDevToolsConsoleEvents(context.driver, getSupportedBrowser(browser));
-        context.driver.manage().window().maximize();
+        context.setDriver(initializeDrive(browser));
+        logDevToolsConsoleEvents(context.getDriver(), getSupportedBrowser(browser));
+        context.getDriver().manage().window().maximize();
     }
 
     @BeforeStep
@@ -46,7 +46,7 @@ public class CucumberHooks {
     public void after(){
         stopMobProxyServer();
         if(context.getDriver() != null){
-            context.driver.quit();
+            context.getDriver().quit();
         }
         log.info("\n\n\n");
     }

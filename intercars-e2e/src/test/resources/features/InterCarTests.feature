@@ -3,6 +3,7 @@ Feature: As a client I should be able to manage my shopping chart
   Scenario Outline: As client I should be able to add and remove items from my chart
 #    TODO close cookies button does not work
     Given I'm on intercars main page
+    And I accepted cookie policy
     When I click select vehicle
     And I select vehicle: <brand>, <model> <model_year>, <engine>, <engine_catalog_number>
     And I select "tires"

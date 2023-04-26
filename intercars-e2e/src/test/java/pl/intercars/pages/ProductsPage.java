@@ -23,14 +23,19 @@ public class ProductsPage extends BasePage{
     @FindBy(xpath="//div[@class='align-right']//button[@id='checkout']")
     private WebElement nextButton;
 
+    private final String promptedProductsXpath = "//div[@id='promoted-products']//div[@class='clearfix']";
     public ProductsPage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(this.driver, this);
     }
 
+    private By getCategoryLabelBy(final Category category){
+        return By.xpath("//section[@id='sidebar']//a[@href='" + category.getHref() + "']");
+    }
     public void selectCategory(final Category category) throws InterruptedException {
-        WebElement element = driver.findElement(
-                By.xpath("//section[@id='sidebar']//a[@href='" + category.getHref() + "']"));
+        By by = getCategoryLabelBy(category);
+        waitForElementToBeClickable(by);
+        WebElement element = driver.findElement(by);
         scrollIntoViewJS(element);
         element.click();
     }
@@ -40,33 +45,49 @@ public class ProductsPage extends BasePage{
         return titleLabel.getText();
     }
 
-    public String getProductName(final int index){
-        WebElement element = driver.findElement(
-                By.xpath("//div[@id='promoted-products']//div[@class='clearfix']["
-                        + index + "]//a[@class='prod-label']"));
-        return element.getText();
+    private By getProductBy(final int index){
+        return By.xpath(promptedProductsXpath +
+                "[" + index + "]//a[@class='prod-label']");
     }
 
-    public String getProductPrice(final int index){
-        WebElement element = driver.findElement(
-                By.xpath("//div[@id='promoted-products']//div[@class='clearfix']["
-                        + index + "]//span[@class='current-price nowrap']"));
-        return element.getText();
+    public String getProductNameText(final int index){
+        By by = getProductBy(index);
+        waitForElementToBeVisible(by);
+        return driver.findElement(by).getText();
+    }
+
+    private By getProductPriceLabelBy(final int index){
+        return By.xpath(promptedProductsXpath +
+                "[" + index + "]//span[@class='current-price nowrap']");
+    }
+
+    public String getProductPriceText(final int index){
+        By by = getProductPriceLabelBy(index);
+        waitForElementToBeVisible(by);
+        return driver.findElement(by).getText();
+    }
+
+    private By getProductQuantityLabelBy(final int index){
+        return By.xpath(promptedProductsXpath +
+                "[" + index + "]//input[@name='quantity']");
     }
 
     public void inputProductQuantity(final int index, final int quantity){
-        WebElement element = driver.findElement(
-                By.xpath("//div[@id='promoted-products']//div[@class='clearfix']["
-                        + index + "]//input[@name='quantity']"));
+        By by = getProductQuantityLabelBy(index);
+        waitForElementToBeClickable(by);
+        WebElement element = driver.findElement(by);
         element.clear();
         element.sendKeys(String.valueOf(quantity));
     }
 
-    public void clickSubmitButton(final int index) throws InterruptedException {
-        WebElement element = driver.findElement(
-                By.xpath("//div[@id='promoted-products']//div[@class='clearfix']["
-                        + index + "]//button[@type='submit']"));
-        element.click();
+    private By getSubmitButtonBy(final int index){
+        return By.xpath(promptedProductsXpath +
+                "[" + index + "]//button[@type='submit']");
+    }
+    public void clickSubmitButton(final int index) {
+        By by = getSubmitButtonBy(index);
+        waitForElementToBeClickable(by);
+        driver.findElement(by).click();
     }
 
     public String getProductInChartNameLabelText(){

@@ -6,6 +6,8 @@ import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.client.ClientUtil;
 import org.openqa.selenium.Proxy;
 
+import static pl.intercars.configs.GlobalArguments.PROXY_PORT;
+
 @Slf4j
 public class BrowserMobConfig {
     private static BrowserMobProxy proxy;
@@ -14,7 +16,7 @@ public class BrowserMobConfig {
         log.info("Starting Browser Mob Proxy");
         proxy = new BrowserMobProxyServer();
         proxy.setTrustAllServers(true);
-        proxy.start(1234);
+        proxy.start(PROXY_PORT);
         log.info("Successfully started Browser Mob Proxy: {}", proxy.getChainedProxy());
     }
 

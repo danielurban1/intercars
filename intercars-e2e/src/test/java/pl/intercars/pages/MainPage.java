@@ -6,14 +6,23 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import static pl.intercars.configs.GlobalArguments.URL;
+
 public class MainPage extends BasePage{
-    public static final String URL = "https://intercars.pl/";
+    public final String url = URL;
+
+    @FindBy(xpath = "//button[@onclick='approveCookie()']")
+    private WebElement acceptCookiesButton;
 
     @FindBy(className = "icon-car")
     private WebElement carIcon;
 
     @FindBy(id = "jqs-vehicle-chain-selector")
     private  WebElement vehicleSelectorPopup;
+
+    @FindBy(className = "modal-header")
+    private  WebElement selectVehicleByBrandAndModelLabel;
+
     @FindBy(xpath = "//a[@id='jqs-vehicle-brands-button']/span[1]")
     private WebElement vehicleBrandLabel;
 
@@ -40,8 +49,15 @@ public class MainPage extends BasePage{
     }
 
     public void openPage(){
-        driver.get(URL);
+        driver.get(url);
     }
+
+    public void clickAcceptCookiesButton(){
+        waitForElementToBeClickable(acceptCookiesButton);
+        acceptCookiesButton.click();
+        waitForElementToDisappear(acceptCookiesButton);
+    }
+
     public void clickCarIcon() {
         waitForElementToBeClickable(carIcon);
         carIcon.click();
@@ -51,12 +67,21 @@ public class MainPage extends BasePage{
         return isElementVisible(vehicleSelectorPopup);
     }
 
+    public void clickSelectVehicleByBrandAndModeLabel(){
+        waitForElementToBeClickable(selectVehicleByBrandAndModelLabel);
+        selectVehicleByBrandAndModelLabel.click();
+    }
+
+    private By vehicleBrandOptionBy(final String carBrand){
+        return By.xpath("//ul[@id='jqs-vehicle-brands-menu']//a[text()='" + carBrand + "']");
+    }
+
     public void selectVehicleBrand(final String carBrand) throws InterruptedException {
         waitForElementToBeClickable(vehicleBrandLabel);
         vehicleBrandLabel.click();
-        WebElement element = driver.findElement(
-                By.xpath("//ul[@id='jqs-vehicle-brands-menu']//a[text()='" + carBrand + "']"));
+        WebElement element = driver.findElement(vehicleBrandOptionBy(carBrand));
         scrollIntoViewJS(element);
+        waitForElementToBeClickable(element);
         element.click();
     }
 
@@ -65,13 +90,16 @@ public class MainPage extends BasePage{
         return vehicleBrandLabel.getText();
     }
 
+    private By vehicleModelOption(final String model, final String modelYear){
+        return By.xpath("//tr/td[text()='" + model + "']/following-sibling::td[text()='" + modelYear + "']");
+    }
     public void selectVehicleModel(final String model, final String modelYear) throws InterruptedException {
-       Thread.sleep(300);
+        clickSelectVehicleByBrandAndModeLabel();
         waitForElementToBeClickable(vehicleModelLabel);
         vehicleModelLabel.click();
-        WebElement element = driver.findElement(
-                By.xpath("//tr/td[text()='" + model + "']/following-sibling::td[text()='" + modelYear + "']"));
+        WebElement element = driver.findElement(vehicleModelOption(model, modelYear));
         scrollIntoViewJS(element);
+        waitForElementToBeClickable(element);
         element.click();
     }
 
@@ -85,13 +113,16 @@ public class MainPage extends BasePage{
         return selectedVehicleModelYearLabel.getText();
     }
 
-    public void selectEngineType(final String engine, final String engineCatalogNumber ) throws InterruptedException {
-        Thread.sleep(300);
+    private By engineTypeOption(final String engine, final String engineCatalogNumber){
+        return By.xpath("//td[@valign='top' and text() = '" + engine + " " + engineCatalogNumber + "']");
+    }
+    public void selectEngineType(final String engine, final String engineCatalogNumber) throws InterruptedException {
+        clickSelectVehicleByBrandAndModeLabel();
         waitForElementToBeClickable(engineTypeLabel);
         engineTypeLabel.click();
-        WebElement element = driver.findElement(
-                By.xpath("//td[@valign='top' and text() = '" + engine + " " + engineCatalogNumber + "']"));
+        WebElement element = driver.findElement(engineTypeOption(engine, engineCatalogNumber));
         scrollIntoViewJS(element);
+        waitForElementToBeClickable(element);
         element.click();
     }
 

@@ -5,10 +5,13 @@ import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 import org.junit.runner.RunWith;
 
+import static pl.intercars.configs.GlobalArguments.CUCUMBER_GLUE;
+import static pl.intercars.configs.GlobalArguments.FEATURES;
+
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        glue = "pl.intercars",
-        features = "src/test/resources/features",
+        glue = CUCUMBER_GLUE,
+        features = FEATURES,
         publish = true)
 public class TestRunner {
 }

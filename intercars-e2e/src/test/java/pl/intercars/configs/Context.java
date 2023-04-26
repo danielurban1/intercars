@@ -8,7 +8,7 @@ import pl.intercars.models.Product;
 @Getter
 @Setter
 public class Context {
-    public WebDriver driver;
+    private WebDriver driver;
 
-    public Product product;
+    private Product product;
 }
