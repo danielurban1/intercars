@@ -10,10 +10,13 @@ import org.openqa.selenium.support.events.EventFiringDecorator;
 import org.openqa.selenium.support.events.WebDriverListener;
 import pl.intercars.enums.SupportedBrowser;
 
+import java.net.UnknownHostException;
+
+import static pl.intercars.configs.BrowserMobConfig.getSeleniumProxy;
 import static pl.intercars.enums.SupportedBrowser.getSupportedBrowser;
 
 public class WebDriverFactory {
-    public static WebDriver initializeDrive(final String browser) {
+    public static WebDriver initializeDrive(final String browser) throws UnknownHostException {
         SupportedBrowser supportedBrowser;
         if (browser == null) {
             supportedBrowser = SupportedBrowser.CHROME;
@@ -33,9 +36,11 @@ public class WebDriverFactory {
         return setupDriverListener(driver);
     }
 
-    private static WebDriver initializeChrome() {
+    private static WebDriver initializeChrome() throws UnknownHostException {
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--remote-allow-origins=*");
+        chromeOptions.addArguments("ignore-certificate-errors");
+        chromeOptions.setProxy(getSeleniumProxy());
         WebDriverManager.chromedriver().setup();
         return new ChromeDriver(chromeOptions);
     }

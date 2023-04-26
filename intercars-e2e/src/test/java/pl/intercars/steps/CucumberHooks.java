@@ -9,6 +9,9 @@ import org.openqa.selenium.WebDriver;
 import pl.intercars.configs.Context;
 import pl.intercars.enums.SupportedBrowser;
 
+import java.net.UnknownHostException;
+
+import static pl.intercars.configs.BrowserMobConfig.*;
 import static pl.intercars.configs.WebDriverFactory.initializeDrive;
 @Slf4j
 @Getter
@@ -16,10 +19,12 @@ import static pl.intercars.configs.WebDriverFactory.initializeDrive;
 public class CucumberHooks {
     private Context context;
     @Before
-    public void before(Scenario scenario){
+    public void before(Scenario scenario) throws UnknownHostException {
         log.info("Running scenario: " + scenario.getName());
         String browser = System.getProperty("browser");
         log.info("Selected browser: " + browser);
+        startMobProxyServer();
+        logHttpTraffic(false);
         context.driver = initializeDrive(browser);
         context.driver.manage().window().maximize();
     }
@@ -35,6 +40,7 @@ public class CucumberHooks {
 
     @After
     public void after(){
+        stopMobProxyServer();
         if(context.getDriver() != null){
             context.driver.quit();
         }
