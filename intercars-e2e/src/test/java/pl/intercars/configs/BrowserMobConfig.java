@@ -41,7 +41,7 @@ public class BrowserMobConfig {
                         httpResponse.status().code(),
                         httpMessageContents.getTextContents());
             }
-            else if(httpResponse.status().code() >= 400){
+            if (httpResponse.status().code() >= 400){
                 log.error("Request URL: {}{}" +
                                 "\nheaders: {}" +
                                 "\nmethod: {}" +
